@@ -1,0 +1,198 @@
+# High-Frequency Statistical Arbitrage Strategy Development
+# .gitignore file
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# PyCharm
+.idea/
+
+# VS Code
+.vscode/
+
+# C++ build artifacts
+cpp/build/
+cpp/cmake-build-*/
+*.o
+*.obj
+*.exe
+*.out
+*.app
+*.dylib
+*.so
+*.dll
+*.a
+*.lib
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.cmake
+
+# Data files (market data, results, etc.)
+data/
+*.csv
+*.parquet
+*.h5
+*.hdf5
+*.pkl
+*.pickle
+*.joblib
+
+# Model files
+models/
+*.h5
+*.pkl
+*.pickle
+*.joblib
+*.pt
+*.pth
+
+# Logs
+logs/
+*.log
+*.out
+
+# Results and outputs
+results/
+outputs/
+backtest_results/
+performance_plots/
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE and editor files
+*.sublime-project
+*.sublime-workspace
+.project
+.classpath
+.settings/
+
+# Package manager files
+package-lock.json
+yarn.lock
+Pipfile.lock
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# API keys and secrets
+config/secrets.yaml
+config/api_keys.yaml
+*.key
+*.pem
+*.p12
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Profiling data
+*.prof
+*.profile
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# Pyre type checker
+.pyre/
+
+# CUDA
+*.cubin
+*.ptx
+
+# GPU memory dumps
+*.dump
+
+# Trading specific
+*.trade
+*.order
+*.execution
+*.signal
+
+# Market data
+market_data/
+tick_data/
+order_book_data/
+
+# Performance metrics
+performance_metrics/
+sharpe_ratios/
+drawdowns/
+
+# Configuration overrides
+config/local_*.yaml
+config/production_*.yaml 

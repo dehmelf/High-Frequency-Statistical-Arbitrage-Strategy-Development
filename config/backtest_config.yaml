@@ -1,0 +1,115 @@
+# High-Frequency Statistical Arbitrage Backtesting Configuration
+
+# Date range for backtesting
+start_date: "2023-01-01"
+end_date: "2023-12-31"
+
+# Trading symbols
+symbols:
+  - "AAPL"
+  - "MSFT"
+  - "GOOGL"
+  - "AMZN"
+  - "TSLA"
+  - "NVDA"
+  - "META"
+  - "NFLX"
+
+# Portfolio configuration
+initial_capital: 1000000.0  # $1M initial capital
+max_position_size: 0.15     # Maximum 15% in any single position
+rebalance_frequency: "hourly"  # Rebalance every hour
+
+# Transaction costs and market impact
+transaction_cost_bps: 1.0   # 1 basis point transaction cost
+market_impact_bps: 2.0      # 2 basis points market impact per 1000 shares
+
+# Risk-free rate for Sharpe ratio calculation
+risk_free_rate: 0.05        # 5% annual risk-free rate
+
+# Benchmark for comparison
+benchmark_symbol: "SPY"
+
+# Alpha generation parameters
+alpha_generation:
+  pca:
+    n_components: 10
+    explained_variance_threshold: 0.95
+  
+  elastic_net:
+    alpha: 0.01
+    l1_ratio: 0.5
+    max_iter: 2000
+  
+  lstm:
+    sequence_length: 60
+    hidden_units: 128
+    dropout_rate: 0.2
+    learning_rate: 0.001
+    batch_size: 32
+    epochs: 100
+  
+  ensemble:
+    weights: [0.4, 0.3, 0.3]  # PCA, Elastic Net, LSTM weights
+
+# Execution policy parameters
+execution:
+  dqn:
+    state_size: 12
+    action_size: 1
+    learning_rate: 0.001
+    gamma: 0.95
+    epsilon: 1.0
+    epsilon_min: 0.01
+    epsilon_decay: 0.995
+  
+  order_params:
+    urgency: 0.5
+    max_slippage: 0.02
+    time_horizon: 24
+
+# Performance targets
+performance_targets:
+  target_sharpe_ratio: 1.8
+  max_drawdown: 0.15
+  target_annual_return: 0.20
+  max_volatility: 0.25
+
+# Monte Carlo simulation parameters
+monte_carlo:
+  n_paths: 1000000
+  n_steps: 252
+  heston_params:
+    kappa: 2.0
+    theta: 0.04
+    eta: 0.3
+    rho: -0.7
+    v0: 0.04
+  
+  sabr_params:
+    alpha: 0.2
+    beta: 0.5
+    rho: -0.7
+    nu: 0.3
+
+# Data pipeline configuration
+data_pipeline:
+  cpp:
+    max_symbols: 1000
+    ring_buffer_size: 1000000
+    data_source_ip: "127.0.0.1"
+    data_source_port: 8888
+  
+  python:
+    batch_size: 1000
+    update_frequency: "1s"
+    enable_logging: true
+    log_level: "INFO"
+
+# Output configuration
+output:
+  save_trades: true
+  save_signals: true
+  save_performance: true
+  plot_results: true
+  output_directory: "data" 

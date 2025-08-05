@@ -1,0 +1,144 @@
+version: '3.8'
+
+services:
+  # High-Frequency Trading System
+  hf-trading:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        CUDA_AVAILABLE: "false"  # Set to "true" if you have GPU support
+    container_name: hf-arbitrage-system
+    ports:
+      - "8888:8888"  # Data pipeline port
+      - "8889:8889"  # Web dashboard port (if implemented)
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./logs:/app/logs
+      - ./results:/app/results
+      - ./config:/app/config:ro
+    environment:
+      - PYTHONPATH=/app/python/src
+      - CUDA_VISIBLE_DEVICES=0  # Set to empty string for CPU-only
+      - LOG_LEVEL=INFO
+    restart: unless-stopped
+    networks:
+      - hf-network
+
+  # Redis for caching and message queuing
+  redis:
+    image: redis:7-alpine
+    container_name: hf-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    networks:
+      - hf-network
+
+  # PostgreSQL for data persistence
+  postgres:
+    image: postgres:15-alpine
+    container_name: hf-postgres
+    environment:
+      POSTGRES_DB: hf_trading
+      POSTGRES_USER: trader
+      POSTGRES_PASSWORD: trading_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./config/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    restart: unless-stopped
+    networks:
+      - hf-network
+
+  # Grafana for monitoring and visualization
+  grafana:
+    image: grafana/grafana:latest
+    container_name: hf-grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./config/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./config/grafana/datasources:/etc/grafana/provisioning/datasources:ro
+    restart: unless-stopped
+    networks:
+      - hf-network
+
+  # Prometheus for metrics collection
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: hf-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    restart: unless-stopped
+    networks:
+      - hf-network
+
+  # Jupyter Notebook for development and analysis
+  jupyter:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hf-jupyter
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./notebooks:/app/notebooks
+      - ./data:/app/data
+      - ./models:/app/models
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+      - JUPYTER_TOKEN=development
+    command: jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.token='development'
+    restart: unless-stopped
+    networks:
+      - hf-network
+
+  # Market data simulator (for testing)
+  market-simulator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hf-market-simulator
+    volumes:
+      - ./simulators:/app/simulators
+    environment:
+      - SIMULATION_MODE=true
+    command: python3 /app/simulators/market_data_simulator.py
+    restart: unless-stopped
+    networks:
+      - hf-network
+
+volumes:
+  redis_data:
+    driver: local
+  postgres_data:
+    driver: local
+  grafana_data:
+    driver: local
+  prometheus_data:
+    driver: local
+
+networks:
+  hf-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16 
