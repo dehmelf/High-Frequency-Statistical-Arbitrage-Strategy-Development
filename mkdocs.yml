@@ -1,0 +1,72 @@
+site_name: High-Frequency Statistical Arbitrage Strategy Development
+site_description: A comprehensive implementation of a low-latency statistical arbitrage strategy
+site_author: High-Frequency Trading Team
+site_url: https://dehmelf.github.io/High-Frequency-Statistical-Arbitrage-Strategy-Development/
+
+repo_name: dehmelf/High-Frequency-Statistical-Arbitrage-Strategy-Development
+repo_url: https://github.com/dehmelf/High-Frequency-Statistical-Arbitrage-Strategy-Development
+
+theme:
+  name: material
+  language: en
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to light mode
+
+nav:
+  - Home: index.md
+  - Strategy Overview: strategy_overview.md
+  - Installation: installation.md
+  - Usage: usage.md
+  - API Reference: api_reference.md
+  - Contributing: ../CONTRIBUTING.md
+
+plugins:
+  - search
+  - git-revision-date-localized:
+      enable_creation_date: true
+
+markdown_extensions:
+  - admonition
+  - codehilite
+  - pymdownx.superfences
+  - pymdownx.tabbed
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.smartsymbols
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - attr_list
+  - md_in_html
+  - def_list
+  - footnotes
+  - toc:
+      permalink: true
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/dehmelf/High-Frequency-Statistical-Arbitrage-Strategy-Development
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/hf_trading
+
+extra_css:
+  - stylesheets/extra.css
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js 
